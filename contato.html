@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Descrição que aparece nos resultados de busca -->
+<meta name="description" content="Mini blog sobre UI/UX Design: conceitos, dicas e melhores práticas para criar interfaces centradas no usuário.">
+  <title>Mini Blog</title>
+  <link rel="stylesheet" href="./assets/css/styles.css" />
+</head>
+
+<body>
+  <header>
+    <h1>Mini blog sobre UI/UX Design</h1>
+  </header>
+  <nav>
+    <a href="./index.html">Início</a>
+    <a href="uxdesign.html">UX Design</a>
+    <a href="uidesign.html">UI Design</a>
+    <a href="">Contato</a>
+  </nav>
+
+  <div>
+    <div class="formularioBloco">
+      <h2>Formulário de contato</h2>
+      <p id="msgErro" style="color: red;"></p>
+      <form id="formulario">
+        <div>
+          <label for="nome">Nome:</label>
+          <input type="text" id="nome" name="nome" placeholder="Tiago Vale" />
+          <span class="erro" id="erroNome"></span>
+        </div>
+
+        <div>
+          <label for="foneid">Telefone:</label>
+          <input type="text" id="foneid" name="fone" placeholder="(xx)xxxxx-xxxx" />
+          <span class="erro" id="erroFone"></span>
+        </div>
+
+        <div>
+          <label for="email">Email:</label>
+          <input type="text" id="email" name="email" placeholder="fulano@mail.com" />
+          <span class="erro" id="erroEmail"></span>
+        </div>
+
+        <div>
+          <label for="mensagem">Mensagem:</label>
+          <textarea id="mensagem" name="mensagem" placeholder="Escreva aqui…"></textarea>
+          <span class="erro" id="erroMensagem"></span>
+        </div>
+        <div class="buttonSubmit">
+          <button type="submit">Enviar sua mensagem</button>
+          <p id="msgErroGeral" class="erro"></p>
+        </div>
+
+      </form>
+
+    </div>
+    <footer>2025 Mini blog. Todos os direitos reservados.</footer>
+    <script>
+      document.getElementById("formulario").addEventListener("submit", function (event) {
+        event.preventDefault();           // sempre bloqueia o envio até validar tudo
+
+        // Campos e spans de erro
+        const nome = document.getElementById("nome");
+        const fone = document.getElementById("foneid");
+        const email = document.getElementById("email");
+        const mensagem = document.getElementById("mensagem");
+
+        const erroNome = document.getElementById("erroNome");
+        const erroFone = document.getElementById("erroFone");
+        const erroEmail = document.getElementById("erroEmail");
+        const erroMensagem = document.getElementById("erroMensagem");
+        const erroGeral = document.getElementById("msgErroGeral");
+
+        // Limpa erros anteriores
+        [erroNome, erroFone, erroEmail, erroMensagem, erroGeral].forEach(el => el.textContent = "");
+        [nome, fone, email, mensagem].forEach(el => el.classList.remove("erroInput"));
+
+        let temErro = false;
+
+        // --- Validação do nome ---
+        if (nome.value.trim().length < 3) {
+          erroNome.textContent = "Nome deve ter pelo menos 3 letras.";
+          nome.classList.add("erroInput");
+          temErro = true;
+        }
+
+        // --- Validação do telefone ---
+        // Exige 10 ou 11 dígitos numéricos
+        const nums = fone.value.replace(/\D/g, "");
+        if (nums.length < 10 || nums.length > 11) {
+          erroFone.textContent = "Telefone deve ter 10 ou 11 dígitos numéricos.";
+          fone.classList.add("erroInput");
+          temErro = true;
+        }
+
+        // --- Validação do email ---
+        // Checa “algo@algo.algo”
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+          erroEmail.textContent = "Email inválido.";
+          email.classList.add("erroInput");
+          temErro = true;
+        }
+
+        // --- Validação da mensagem ---
+        if (mensagem.value.trim().length < 5) {
+          erroMensagem.textContent = "Mensagem muito curta.";
+          mensagem.classList.add("erroInput");
+          temErro = true;
+        }
+
+        if (temErro) {
+          erroGeral.textContent = "Por favor, corrija os erros acima para enviar.";
+          return; // sai sem enviar
+        }
+
+        // Se chegar aqui, tudo OK:
+        alert(`Obrigado, ${nome.value}! Seus dados foram enviados.`);
+        this.submit(); // ou envie por AJAX, conforme necessidade
+      });
+    </script>
+
+
+</body>
+
+</html>
